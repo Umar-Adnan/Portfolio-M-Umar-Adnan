@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  
+  /* Normal Arrow: Red outline, Black inside, NO dot */
+  --arrow-normal: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M5%202%20L5%2025%20L11.5%2019%20L16%2028%20L19.8%2026.2%20L15.3%2017.2%20L23%2017.2%20Z%22%20fill%3D%22%23000000%22%20stroke%3D%22%23ff0033%22%20stroke-width%3D%222.4%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E") 5 2, auto;
+
+  /* Click Action: Solid Red fill, Red outline, NO dot */
+  --arrow-click: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M5%202%20L5%2025%20L11.5%2019%20L16%2028%20L19.8%2026.2%20L15.3%2017.2%20L23%2017.2%20Z%22%20fill%3D%22%23ff0033%22%20stroke%3D%22%23ff0033%22%20stroke-width%3D%222.4%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E") 5 2, auto;
+}
+
+body {
+  background-color: #080808;
+  color: #f4f4f6;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(255, 0, 51, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(185, 28, 28, 0.03) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+/* Apply classic arrow cursor across all elements */
+html, body, a, button, input, textarea, select, [role="button"] {
+  cursor: var(--arrow-normal) !important;
+}
+
+/* On Click Action: Arrow turns Solid Red */
+body.cursor-clicking, 
+body.cursor-clicking *,
+:active {
+  cursor: var(--arrow-click) !important;
+}
+
+/* ==========================================================================
+   Obsidian Glassmorphic Card System
+   - Glass effect with frosted backdrop blur and specular bevel highlight
+   - Automatic pitch-black fallback for unsupported browsers
+   - Zero loss in visual fidelity or text contrast
+   ========================================================================== */
+
+.obsidian-card,
+.glass-card {
+  /* Fallback 1: Pure deep obsidian black for older engines or before blur loads */
+  background-color: #0e0e12;
+
+  /* Enhanced Glassmorphic translucent body: reveals background wave motion through glass */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    rgba(22, 22, 30, 0.38) 35%,
+    rgba(10, 10, 16, 0.52) 100%
+  );
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(180%);
+
+  /* Crisp glass specular perimeter */
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 1.75rem;
+
+  /* Specular rim light + deep ambient card elevation */
+  box-shadow: 
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.24),
+    inset 0 0 16px 0 rgba(255, 255, 255, 0.02),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.5),
+    0 20px 45px -12px rgba(0, 0, 0, 0.8);
+  
+  transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.obsidian-card:hover,
+.glass-card:hover {
+  border-color: rgba(255, 0, 51, 0.6);
+  box-shadow: 
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.35),
+    0 24px 50px -10px rgba(0, 0, 0, 0.85),
+    0 0 28px rgba(255, 0, 51, 0.28);
+}
+
+.obsidian-card-interactive {
+  background-color: #121216;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(20, 20, 28, 0.60) 50%,
+    rgba(10, 10, 14, 0.75) 100%
+  );
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1.75rem;
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.2),
+    0 14px 32px -6px rgba(0, 0, 0, 0.7);
+}
+
+/* Fallback specifically for browsers without backdrop-filter support */
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .obsidian-card,
+  .glass-card,
+  .obsidian-card-interactive {
+    background-color: #0e0e12 !important;
+    background-image: none !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+}
+
+/* Red Glow Hover utility */
+.hover-glow-red {
+  transition: all 0.25s ease-out;
+}
+.hover-glow-red:hover {
+  border-color: rgba(255, 0, 51, 0.5);
+  box-shadow: 0 0 25px rgba(255, 0, 51, 0.25);
+}
+
+/* High contrast focus ring for a11y */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid #ff0033 !important;
+  outline-offset: 2px !important;
+}
+
+/* Custom Minimal Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #080808;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff0033;
+}
+
+/* Particles.js full-screen backdrop canvas */
+#particles-js {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particles-js-canvas-el {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
+}
