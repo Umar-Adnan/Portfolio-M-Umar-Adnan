@@ -133,16 +133,7 @@ export default function PixelAvatar() {
         ctx.stroke();
         ctx.restore();
 
-        // Horizontal scan beam line during assembly
         if (currentProgress < 1) {
-          const scanY = (elapsed / duration) * size;
-          ctx.strokeStyle = 'rgba(255, 0, 51, 0.7)';
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.moveTo(cx - radius, scanY);
-          ctx.lineTo(cx + radius, scanY);
-          ctx.stroke();
-
           requestAnimationFrame(renderFrame);
         } else {
           setIsAssembled(true);
