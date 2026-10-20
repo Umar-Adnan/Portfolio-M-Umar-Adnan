@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import particlesConfig from '../data/particlesConfig.json';
+import baseConfig from '../data/particlesConfig.json';
 
 export default function ParticlesBackground() {
   useEffect(() => {
@@ -18,8 +18,26 @@ export default function ParticlesBackground() {
             window.pJSDom = [];
           }
 
-          // Launch particles.js with exact config from particlesjs-config.json
-          window.particlesJS('particles-js', particlesConfig);
+          // Clone base configuration
+          const config = JSON.parse(JSON.stringify(baseConfig));
+
+          // Device & viewport-aware performance scaling:
+          // Low-end / mobile: 38 particles, distance 130px
+          // Medium / laptop: 55 particles, distance 155px
+          // Desktop: 72 particles, distance 170px
+          const isMobile = window.innerWidth < 768;
+          const isLowEnd = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || isMobile;
+
+          const particleCount = isMobile ? 38 : (isLowEnd ? 52 : 72);
+          const linkDistance = isMobile ? 130 : 165;
+
+          // CRITICAL: Disable unbounded density scaling so zooming out or 4K never explodes particles to 2000+
+          config.particles.number.value = particleCount;
+          config.particles.number.density.enable = false;
+          config.particles.line_linked.distance = linkDistance;
+
+          // Launch particles.js with capped, ultra-smooth configuration
+          window.particlesJS('particles-js', config);
         } catch (err) {
           console.error('particlesJS init error:', err);
         }
