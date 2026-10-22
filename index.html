@@ -5,27 +5,144 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <title>Muhammad Umar Adnan | Full-Stack Developer & AI Practitioner</title>
     
-    <!-- SEO Meta Tags -->
+    <!-- SEO & Indexing Meta Tags -->
     <meta name="description" content="Portfolio of Muhammad Umar Adnan — Computer Science Student @ UMT, Full-Stack Developer (MERN & Ruby on Rails), AI/ML Practitioner, and Educator @ TeachmeROR. Based in Lahore, Pakistan." />
     <meta name="keywords" content="Muhammad Umar Adnan, Umar Adnan, Full-Stack Developer, AI Engineer, Machine Learning, Ruby on Rails, React, PyTorch, UMT Lahore, TeachmeROR, Portfolio" />
     <meta name="author" content="Muhammad Umar Adnan" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
     <link rel="canonical" href="https://umaradnan.dev/" />
+    <link rel="alternate" hreflang="x-default" href="https://umaradnan.dev/" />
+    <link rel="alternate" hreflang="en" href="https://umaradnan.dev/" />
     
-    <!-- Open Graph / Facebook / LinkedIn -->
+    <!-- Open Graph Suite with Explicit Dimensions -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://umaradnan.dev/" />
     <meta property="og:title" content="Muhammad Umar Adnan | Full-Stack Developer & AI Practitioner" />
     <meta property="og:description" content="Computer Science Student @ UMT | Full-Stack Developer (MERN & RoR) | AI/ML Practitioner | Educator @ TeachmeROR. Open for internships and projects." />
-    <meta property="og:image" content="https://umaradnan.dev/og-preview.png" />
+    <meta property="og:image" content="https://umaradnan.dev/avatar.webp" />
+    <meta property="og:image:width" content="682" />
+    <meta property="og:image:height" content="682" />
+    <meta property="og:image:alt" content="Muhammad Umar Adnan - Full-Stack Developer & AI Practitioner" />
     <meta property="og:site_name" content="Muhammad Umar Adnan Portfolio" />
     <meta property="og:locale" content="en_US" />
 
-    <!-- Twitter -->
+    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Muhammad Umar Adnan | Full-Stack Developer & AI Practitioner" />
     <meta name="twitter:description" content="Computer Science Student @ UMT | Full-Stack Developer (MERN & RoR) | AI/ML Practitioner | Educator @ TeachmeROR." />
-    <meta name="twitter:image" content="https://umaradnan.dev/og-preview.png" />
+    <meta name="twitter:image" content="https://umaradnan.dev/avatar.webp" />
+
+    <!-- 34. Structured Data: JSON-LD Schema Graph -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://umaradnan.dev/#person",
+          "name": "Muhammad Umar Adnan",
+          "alternateName": ["M Umar Adnan", "Umar Adnan"],
+          "url": "https://umaradnan.dev/",
+          "image": "https://umaradnan.dev/avatar.webp",
+          "jobTitle": "Full-Stack Developer & AI Practitioner",
+          "worksFor": {
+            "@type": "EducationalOrganization",
+            "name": "University of Management and Technology (UMT)"
+          },
+          "sameAs": [
+            "https://github.com/Umar-Adnan",
+            "https://www.linkedin.com/in/m-umar-adnan-a36515240/",
+            "https://www.youtube.com/@teach_me_ror"
+          ],
+          "knowsAbout": [
+            "React 19",
+            "Ruby on Rails",
+            "Python",
+            "PyTorch",
+            "Machine Learning",
+            "Full-Stack Web Development",
+            "Tailwind CSS",
+            "C++ Data Structures & Algorithms"
+          ],
+          "hasCredential": [
+            {
+              "@type": "EducationalOccupationalCredential",
+              "name": "Front-End Development Internship",
+              "recognizedBy": { "@type": "Organization", "name": "DeMeta" }
+            },
+            {
+              "@type": "EducationalOccupationalCredential",
+              "name": "Python Programming Internship",
+              "recognizedBy": { "@type": "Organization", "name": "Afynix Digital" }
+            },
+            {
+              "@type": "EducationalOccupationalCredential",
+              "name": "Learn JavaScript Course",
+              "recognizedBy": { "@type": "Organization", "name": "Codecademy" }
+            }
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "umaradnan2710@gmail.com",
+            "telephone": "+923004262838",
+            "contactType": "professional inquiry"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://umaradnan.dev/#website",
+          "url": "https://umaradnan.dev/",
+          "name": "Muhammad Umar Adnan Portfolio",
+          "description": "Portfolio of Muhammad Umar Adnan — Full-Stack Developer & AI Practitioner",
+          "publisher": { "@id": "https://umaradnan.dev/#person" }
+        },
+        {
+          "@type": "ProfilePage",
+          "@id": "https://umaradnan.dev/#webpage",
+          "url": "https://umaradnan.dev/",
+          "name": "Muhammad Umar Adnan | Full-Stack Developer & AI Practitioner",
+          "mainEntity": { "@id": "https://umaradnan.dev/#person" },
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://umaradnan.dev/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Projects",
+                "item": "https://umaradnan.dev/#projects"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Certificates",
+                "item": "https://umaradnan.dev/#certificates"
+              },
+              {
+                "@type": "ListItem",
+                "position": 4,
+                "name": "Contact",
+                "item": "https://umaradnan.dev/#contact"
+              }
+            ]
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "AI Calling Bot",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web",
+          "description": "An AI-powered voice calling platform designed to scale outbound operations with real-time campaign tracking and automated lead categorization.",
+          "author": { "@id": "https://umaradnan.dev/#person" }
+        }
+      ]
+    }
+    </script>
 
     <!-- Favicon: Terminal Prompt > -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
