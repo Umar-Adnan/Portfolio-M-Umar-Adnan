@@ -37,6 +37,47 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
   <body class="bg-[#080808] text-zinc-100 antialiased selection:bg-[#ff0033]/30 selection:text-[#ff4d4d] min-h-screen overflow-x-hidden">
+    <!-- Phase 1: Hardware & Device Capability Detection Engine -->
+    <script>
+      (function() {
+        var doc = document.documentElement;
+        var nav = navigator || {};
+        var conn = nav.connection || nav.mozConnection || nav.webkitConnection;
+        var ua = nav.userAgent || '';
+        
+        var isTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+        var isReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        var isLegacyUA = /Opera Mini|IEMobile|Android (?:[1-6]\.)/i.test(ua);
+        var isLowConcurrency = typeof nav.hardwareConcurrency === 'number' && nav.hardwareConcurrency <= 2;
+        var isLowMemory = typeof nav.deviceMemory === 'number' && nav.deviceMemory <= 3;
+        var isDataSaver = conn && (conn.saveData === true || conn.effectiveType === 'slow-2g' || conn.effectiveType === '2g');
+        
+        var isLowEnd = isLegacyUA || isLowConcurrency || isLowMemory || isDataSaver;
+        var isMidTier = !isLowEnd && isTouch;
+        
+        if (isLowEnd) {
+          doc.classList.add('low-end');
+        } else if (isMidTier) {
+          doc.classList.add('mid-tier');
+        }
+        
+        if (isTouch) {
+          doc.classList.add('touch-device');
+        }
+        if (isReducedMotion) {
+          doc.classList.add('reduced-motion');
+        }
+        
+        window.__deviceTier = {
+          tier: isLowEnd ? 'low-end' : (isMidTier ? 'mid-tier' : 'high-end'),
+          isLowEnd: isLowEnd,
+          isMidTier: isMidTier,
+          isTouch: isTouch,
+          isReducedMotion: isReducedMotion
+        };
+      })();
+    </script>
     <div id="root"></div>
     <!-- Local High-Performance particles.js Background -->
     <script src="/particles.min.js"></script>
