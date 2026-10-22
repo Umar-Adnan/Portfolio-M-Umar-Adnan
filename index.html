@@ -27,14 +27,24 @@
     <meta name="twitter:description" content="Computer Science Student @ UMT | Full-Stack Developer (MERN & RoR) | AI/ML Practitioner | Educator @ TeachmeROR." />
     <meta name="twitter:image" content="https://umaradnan.dev/og-preview.png" />
 
-    <!-- Favicon: Terminal Prompt >_ -->
+    <!-- Favicon: Terminal Prompt > -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#080808" />
 
-    <!-- Performance: Google Fonts Preconnect -->
+    <!-- 31. Critical LCP Image Preload -->
+    <link rel="preload" as="image" href="/avatar.webp" type="image/webp" fetchpriority="high" />
+
+    <!-- Performance: DNS Prefetch & Google Fonts Preconnect -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Non-blocking Async Web Fonts with Print Fallback -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" />
+    </noscript>
   </head>
   <body class="bg-[#080808] text-zinc-100 antialiased selection:bg-[#ff0033]/30 selection:text-[#ff4d4d] min-h-screen overflow-x-hidden">
     <!-- Phase 1: Hardware & Device Capability Detection Engine -->
