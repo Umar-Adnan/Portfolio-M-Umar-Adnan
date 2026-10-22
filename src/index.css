@@ -157,6 +157,24 @@ html.low-end * {
   transition-duration: 0.001ms !important;
 }
 
+/* 6. Hide decorative GPU elements and particles on low-end */
+html.low-end #cursor-dot,
+html.low-end #cursor-ring,
+html.low-end .custom-cursor {
+  display: none !important;
+}
+
+html.low-end,
+html.low-end * {
+  cursor: auto !important;
+}
+
+html.low-end .ambient-well,
+html.low-end .glow-orb,
+html.low-end #particles-js {
+  display: none !important;
+}
+
 /* Red Glow Hover utility */
 .hover-glow-red {
   transition: all 0.25s ease-out;
