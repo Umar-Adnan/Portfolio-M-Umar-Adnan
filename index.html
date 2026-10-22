@@ -76,6 +76,30 @@
           isTouch: isTouch,
           isReducedMotion: isReducedMotion
         };
+
+        // 2. Battery-Aware Power Throttling
+        if (typeof nav.getBattery === 'function') {
+          nav.getBattery().then(function(battery) {
+            function updateBatteryThrottling() {
+              var isBatteryLow = !battery.charging && battery.level <= 0.20;
+              if (isBatteryLow) {
+                doc.classList.add('low-end');
+                doc.classList.add('battery-saver');
+                if (window.__deviceTier) window.__deviceTier.isBatteryLow = true;
+              } else if (!isLowEnd) {
+                doc.classList.remove('battery-saver');
+                if (!isLowConcurrency && !isLowMemory && !isLegacyUA && !isDataSaver) {
+                  doc.classList.remove('low-end');
+                  if (isMidTier) doc.classList.add('mid-tier');
+                }
+                if (window.__deviceTier) window.__deviceTier.isBatteryLow = false;
+              }
+            }
+            updateBatteryThrottling();
+            battery.addEventListener('levelchange', updateBatteryThrottling);
+            battery.addEventListener('chargingchange', updateBatteryThrottling);
+          }).catch(function() {});
+        }
       })();
     </script>
     <div id="root"></div>
