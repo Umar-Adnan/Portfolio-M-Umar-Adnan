@@ -136,6 +136,27 @@ html.low-end [role="dialog"] > div {
   border-color: var(--obsidian-border) !important;
 }
 
+/* 5. Disable all animations and 3D transforms on low-end */
+html.low-end {
+  scroll-behavior: auto !important;
+}
+
+html.low-end .reveal-3d,
+html.low-end .card-3d,
+html.low-end .obsidian-card,
+html.low-end .glass-card,
+html.low-end .obsidian-card-interactive {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html.low-end * {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
 /* Red Glow Hover utility */
 .hover-glow-red {
   transition: all 0.25s ease-out;
