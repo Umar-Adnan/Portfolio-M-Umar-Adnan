@@ -175,6 +175,27 @@ html.low-end #particles-js {
   display: none !important;
 }
 
+/* 7. Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal-3d,
+  .card-3d,
+  .tilt-card,
+  .marquee {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 /* Red Glow Hover utility */
 .hover-glow-red {
   transition: all 0.25s ease-out;
