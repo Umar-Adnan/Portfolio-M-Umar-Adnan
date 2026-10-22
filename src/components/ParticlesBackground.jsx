@@ -5,41 +5,61 @@ export default function ParticlesBackground() {
   useEffect(() => {
     let checkInterval = null;
 
+    const cleanupParticles = () => {
+      try {
+        if (window.pJSDom && window.pJSDom.length > 0) {
+          for (let i = 0; i < window.pJSDom.length; i++) {
+            if (window.pJSDom[i]?.pJS?.fn?.drawAnimFrame) {
+              cancelAnimationFrame(window.pJSDom[i].pJS.fn.drawAnimFrame);
+            }
+          }
+          window.pJSDom = [];
+        }
+      } catch (e) {}
+    };
+
     const init = () => {
       if (typeof window.particlesJS === 'function') {
         try {
-          // Clean up any old particle instances before instantiating
-          if (window.pJSDom && window.pJSDom.length > 0) {
-            for (let i = 0; i < window.pJSDom.length; i++) {
-              if (window.pJSDom[i]?.pJS?.fn?.drawAnimFrame) {
-                cancelAnimationFrame(window.pJSDom[i].pJS.fn.drawAnimFrame);
-              }
-            }
-            window.pJSDom = [];
-          }
+          cleanupParticles();
+
+          const doc = document.documentElement;
+          const isLowEnd = doc.classList.contains('low-end') || !!(window.__deviceTier && window.__deviceTier.isLowEnd);
+          const isReducedMotion = doc.classList.contains('reduced-motion') ||
+            (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
           // Clone base configuration
           const config = JSON.parse(JSON.stringify(baseConfig));
 
-          // Device & viewport-aware performance scaling:
-          // Low-end / mobile: 38 particles, distance 130px
-          // Medium / laptop: 55 particles, distance 155px
-          // Desktop: 72 particles, distance 170px
           const isMobile = window.innerWidth < 768;
-          const isLowEnd = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || isMobile;
+          const isMidTier = doc.classList.contains('mid-tier');
 
-          const particleCount = isMobile ? 38 : (isLowEnd ? 52 : 72);
-          const linkDistance = isMobile ? 130 : 165;
+          // 17. Particle count scaling by device tier
+          let particleCount = 72;
+          let particleSpeed = 3;
 
-          // CRITICAL: Disable unbounded density scaling so zooming out or 4K never explodes particles to 2000+
+          if (isReducedMotion) {
+            particleCount = 30;
+            particleSpeed = 0;
+          } else if (isLowEnd) {
+            particleCount = 24;
+            particleSpeed = 0.5;
+          } else if (isMobile || isMidTier) {
+            particleCount = 42;
+            particleSpeed = 2;
+          }
+
+          const linkDistance = isMobile ? 125 : 165;
+
           config.particles.number.value = particleCount;
           config.particles.number.density.enable = false;
           config.particles.line_linked.distance = linkDistance;
+          config.particles.move.speed = particleSpeed;
 
-          // Launch particles.js with capped, ultra-smooth configuration
+          // 23. Wrap execution in try-catch
           window.particlesJS('particles-js', config);
         } catch (err) {
-          console.error('particlesJS init error:', err);
+          console.warn('particlesJS gracefully bypassed:', err);
         }
       }
     };
@@ -55,30 +75,29 @@ export default function ParticlesBackground() {
       }, 40);
     }
 
-    // Performance optimization: Pause particle animation when tab is inactive to use 0% CPU
+    // 20. Lifecycle: Pause particle animation when tab is inactive to use 0% CPU
     const handleVisibilityChange = () => {
-      if (window.pJSDom && window.pJSDom[0]?.pJS?.fn) {
-        const pJS = window.pJSDom[0].pJS;
-        if (document.hidden) {
-          if (pJS.fn.drawAnimFrame) cancelAnimationFrame(pJS.fn.drawAnimFrame);
-        } else {
-          pJS.fn.drawAnimFrame = requestAnimationFrame(pJS.fn.vendors.draw);
+      try {
+        if (window.pJSDom && window.pJSDom[0]?.pJS?.fn) {
+          const pJS = window.pJSDom[0].pJS;
+          if (document.hidden) {
+            if (pJS.fn.drawAnimFrame) cancelAnimationFrame(pJS.fn.drawAnimFrame);
+          } else {
+            pJS.fn.drawAnimFrame = requestAnimationFrame(pJS.fn.vendors.draw);
+          }
         }
-      }
+      } catch (e) {}
     };
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener('visibilitychange', handleVisibilityChange, { passive: true });
+
+    // 22. GPU Memory Cleanup on Unload
+    window.addEventListener('beforeunload', cleanupParticles, { once: true });
 
     return () => {
       if (checkInterval) clearInterval(checkInterval);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
-      if (window.pJSDom && window.pJSDom.length > 0) {
-        for (let i = 0; i < window.pJSDom.length; i++) {
-          if (window.pJSDom[i]?.pJS?.fn?.drawAnimFrame) {
-            cancelAnimationFrame(window.pJSDom[i].pJS.fn.drawAnimFrame);
-          }
-        }
-        window.pJSDom = [];
-      }
+      window.removeEventListener('beforeunload', cleanupParticles);
+      cleanupParticles();
     };
   }, []);
 
