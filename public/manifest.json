@@ -1,0 +1,43 @@
+{
+  "name": "Muhammad Umar Adnan | Portfolio",
+  "short_name": "Umar Adnan",
+  "description": "Portfolio of Muhammad Umar Adnan — Full-Stack Developer & AI Practitioner",
+  "start_url": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "handle_links": "preferred",
+  "background_color": "#080808",
+  "theme_color": "#080808",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/avatar.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Projects",
+      "url": "/#projects",
+      "description": "Explore Flagship Software Projects"
+    },
+    {
+      "name": "Certificates",
+      "url": "/#certificates",
+      "description": "View Verified Industry Credentials"
+    },
+    {
+      "name": "Contact Umar",
+      "url": "/#contact",
+      "description": "Direct WhatsApp & Email Communication"
+    }
+  ]
+}
