@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 /**
  * Ultra-high-performance 3D Tilt Card
  * - Zero React state updates on mousemove (direct DOM transforms via requestAnimationFrame)
+ * - Skips entirely on low-end hardware, touch screens, and prefers-reduced-motion
  * - 120 FPS hardware-accelerated (will-change: transform)
  * - Dynamic crimson specular glare follows cursor
  */
@@ -12,6 +13,12 @@ export default function TiltCard({ children, className = '', maxTilt = 8, ...pro
   const rafId = useRef(null);
 
   const handleMouseMove = (e) => {
+    // 28. Skip 3D tilt on low-end hardware, touch devices or reduced motion
+    const doc = document.documentElement;
+    if (doc.classList.contains('low-end') || doc.classList.contains('reduced-motion') || doc.classList.contains('touch-device')) {
+      return;
+    }
+
     const card = cardRef.current;
     if (!card) return;
 
