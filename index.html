@@ -100,6 +100,26 @@
             battery.addEventListener('chargingchange', updateBatteryThrottling);
           }).catch(function() {});
         }
+
+        // 3. Network-Aware Bandwidth Throttling
+        if (conn && typeof conn.addEventListener === 'function') {
+          function updateNetworkThrottling() {
+            var isSlowConn = conn.saveData === true || conn.effectiveType === 'slow-2g' || conn.effectiveType === '2g';
+            if (isSlowConn) {
+              doc.classList.add('low-end');
+              doc.classList.add('data-saver');
+              if (window.__deviceTier) window.__deviceTier.isSlowConn = true;
+            } else if (!isLowConcurrency && !isLowMemory && !isLegacyUA) {
+              doc.classList.remove('data-saver');
+              if (!doc.classList.contains('battery-saver')) {
+                doc.classList.remove('low-end');
+                if (isMidTier) doc.classList.add('mid-tier');
+              }
+              if (window.__deviceTier) window.__deviceTier.isSlowConn = false;
+            }
+          }
+          conn.addEventListener('change', updateNetworkThrottling);
+        }
       })();
     </script>
     <div id="root"></div>
