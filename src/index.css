@@ -225,12 +225,6 @@ html.low-end #particles-js {
   transition: all 0.25s ease-out;
 }
 
-/* High contrast focus ring for a11y */
-a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
-  outline: 2px solid #ff0033 !important;
-  outline-offset: 2px !important;
-}
-
 /* Custom Minimal Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
@@ -244,6 +238,128 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #ff0033;
+}
+
+/* ==========================================================================
+   10. CSS Containment on Heavy Elements
+   ========================================================================== */
+.obsidian-card,
+.glass-card,
+.tilt-card {
+  contain: paint style;
+}
+
+#particles-js,
+.particles-js-canvas-el,
+canvas {
+  contain: strict;
+}
+
+#cursor-dot,
+#cursor-ring,
+.custom-cursor {
+  contain: strict;
+}
+
+.marquee-strip,
+.marquee-track {
+  contain: layout paint style;
+}
+
+/* ==========================================================================
+   11. Focus Accessibility (WCAG 2.1 AA)
+   ========================================================================== */
+:focus-visible {
+  outline: 2px solid #ff0033 !important;
+  outline-offset: 3px !important;
+}
+
+:focus:not(:focus-visible) {
+  outline: none !important;
+}
+
+/* ==========================================================================
+   12. High Contrast Mode (WCAG 2.1 AAA)
+   ========================================================================== */
+@media (forced-colors: active) {
+  .obsidian-card,
+  .glass-card,
+  .obsidian-card-interactive {
+    forced-color-adjust: auto;
+    border: 2px solid ButtonBorder !important;
+    background-color: Canvas !important;
+  }
+
+  :focus-visible {
+    outline: 2px solid Highlight !important;
+    outline-offset: 3px !important;
+  }
+
+  button,
+  a[role="button"],
+  .btn-primary {
+    border: 1px solid ButtonText !important;
+  }
+}
+
+/* ==========================================================================
+   13. Data Saver Mode (prefers-reduced-data)
+   ========================================================================== */
+@media (prefers-reduced-data: reduce) {
+  #particles-js,
+  .ambient-well,
+  .glow-orb {
+    display: none !important;
+  }
+
+  .reveal-3d,
+  .card-3d {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   14. Print Media Optimization
+   ========================================================================== */
+@media print {
+  #particles-js,
+  #cursor-dot,
+  #cursor-ring,
+  .custom-cursor,
+  .ambient-well,
+  [role="dialog"],
+  nav,
+  header {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  #about,
+  #knowledge-graph,
+  #projects,
+  #creator-hub,
+  #experience,
+  #certificates,
+  #skills,
+  #contact {
+    content-visibility: visible !important;
+    contain: none !important;
+    page-break-inside: avoid;
+  }
+
+  .obsidian-card,
+  .glass-card {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #cccccc !important;
+    box-shadow: none !important;
+  }
 }
 
 /* Particles.js focused backdrop canvas */
