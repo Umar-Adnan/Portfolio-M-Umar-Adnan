@@ -31,7 +31,7 @@ export default function About() {
   };
 
   return (
-    <section id="about" className="py-20 sm:py-24 px-4 sm:px-6 lg:px-8 relative">
+    <section id="about" aria-label="About Muhammad Umar Adnan" className="py-20 sm:py-24 px-4 sm:px-6 lg:px-8 relative">
       <div className="max-w-7xl mx-auto">
         
         {/* Section Header */}
@@ -96,6 +96,7 @@ export default function About() {
                 </div>
                 <button
                   onClick={handleCopy}
+                  aria-label={copied ? "Copied profile JSON to clipboard" : "Copy profile JSON to clipboard"}
                   className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono text-zinc-400 hover:text-white bg-white/5 hover:bg-white/10 transition-colors"
                 >
                   {copied ? <Check className="w-3.5 h-3.5 text-[#ff4d4d]" /> : <Copy className="w-3.5 h-3.5" />}

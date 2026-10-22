@@ -5,7 +5,7 @@ import TiltCard from './TiltCard';
 
 export default function Experience() {
   return (
-    <section id="experience" className="py-20 sm:py-24 px-4 sm:px-6 lg:px-8 relative">
+    <section id="experience" aria-label="Professional Experience and Internships" className="py-20 sm:py-24 px-4 sm:px-6 lg:px-8 relative">
       <div className="max-w-5xl mx-auto">
         
         {/* Header */}

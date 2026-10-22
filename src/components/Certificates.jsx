@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Award, ShieldCheck, Download, X, FileText } from 'lucide-react';
 import { certificates } from '../data/portfolioData';
 import { trackEvent } from '../utils/analytics';
@@ -6,6 +6,8 @@ import TiltCard from './TiltCard';
 
 export default function Certificates() {
   const [selectedCert, setSelectedCert] = useState(null);
+  const certModalRef = useRef(null);
+  const certTriggerRef = useRef(null);
 
   const handleDownload = (cert) => {
     trackEvent('download_certificate', { certId: cert.id, title: cert.title });
@@ -17,14 +19,73 @@ export default function Certificates() {
     document.body.removeChild(link);
   };
 
+  const handleOpenCert = (cert, e) => {
+    certTriggerRef.current = e.currentTarget;
+    setSelectedCert(cert);
+  };
+
+  useEffect(() => {
+    if (!selectedCert) return;
+
+    // Focus first interactive element inside certificate modal
+    const focusable = certModalRef.current?.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable && focusable.length > 0) {
+      focusable[0].focus();
+    }
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setSelectedCert(null);
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        if (!certModalRef.current) return;
+        const focusables = Array.from(
+          certModalRef.current.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          )
+        );
+        if (focusables.length === 0) return;
+
+        const firstElement = focusables[0];
+        const lastElement = focusables[focusables.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      if (certTriggerRef.current && typeof certTriggerRef.current.focus === 'function') {
+        certTriggerRef.current.focus();
+      }
+    };
+  }, [selectedCert]);
+
   return (
-    <section id="certificates" className="py-20 sm:py-24 px-4 sm:px-6 lg:px-8 relative">
+    <section id="certificates" aria-label="Licenses and Certifications" className="py-20 sm:py-24 px-4 sm:px-6 lg:px-8 relative">
       <div className="max-w-7xl mx-auto">
         
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#ff0033]/10 border border-[#ff0033]/30 text-[#ff4d4d] text-xs font-mono uppercase tracking-wider mb-3">
-            <ShieldCheck className="w-3.5 h-3.5" />
+            <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" />
             <span>Verified Credentials</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">
@@ -40,8 +101,17 @@ export default function Certificates() {
           {certificates.map((cert) => (
             <TiltCard
               key={cert.id}
-              onClick={() => setSelectedCert(cert)}
+              onClick={(e) => handleOpenCert(cert, e)}
               className="p-6 sm:p-7 rounded-3xl obsidian-card flex flex-col justify-between cursor-pointer group hover-glow-red"
+              role="button"
+              tabIndex={0}
+              aria-label={`View details for ${cert.title}`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleOpenCert(cert, e);
+                }
+              }}
             >
               <div>
                 <div className="flex items-center justify-between mb-4 text-xs font-mono">
@@ -68,7 +138,7 @@ export default function Certificates() {
 
               <div className="pt-4 border-t border-white/5 flex items-center justify-between">
                 <span className="text-xs text-zinc-400 group-hover:text-white transition-colors font-mono flex items-center gap-1.5">
-                  <FileText className="w-3.5 h-3.5 text-[#ff0033]" />
+                  <FileText className="w-3.5 h-3.5 text-[#ff0033]" aria-hidden="true" />
                   <span>View Details</span>
                 </span>
                 
@@ -79,8 +149,9 @@ export default function Certificates() {
                   }}
                   className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold bg-[#ff0033]/15 hover:bg-[#ff0033] text-[#ff4d4d] hover:text-white transition-all shadow-sm"
                   title="Download original certificate file"
+                  aria-label={`Download original certificate for ${cert.title}`}
                 >
-                  <Download className="w-3.5 h-3.5" />
+                  <Download className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>Download</span>
                 </button>
               </div>
@@ -93,23 +164,30 @@ export default function Certificates() {
 
       {/* Clean Minimal Certificate Inspection Modal (No Image Preview) */}
       {selectedCert && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm" role="dialog">
-          <div className="relative w-full max-w-xl rounded-3xl obsidian-card p-6 sm:p-8 border border-white/10 shadow-2xl overflow-hidden flex flex-col">
-            
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="cert-modal-title"
+        >
+          <div
+            ref={certModalRef}
+            className="relative w-full max-w-xl rounded-3xl obsidian-card p-6 sm:p-8 border border-white/10 shadow-2xl overflow-hidden flex flex-col"
+          >
             <button
               onClick={() => setSelectedCert(null)}
               className="absolute top-5 right-5 p-2 rounded-full bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors z-10"
-              aria-label="Close certificate modal"
+              aria-label="Close certificate details modal"
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5" aria-hidden="true" />
             </button>
 
             <div className="flex items-center gap-3 mb-5">
               <div className="w-12 h-12 rounded-2xl bg-[#ff0033]/10 border border-[#ff0033]/30 flex items-center justify-center text-[#ff0033] shrink-0">
-                <Award className="w-6 h-6" />
+                <Award className="w-6 h-6" aria-hidden="true" />
               </div>
               <div>
-                <h3 className="text-lg sm:text-xl font-bold text-white">
+                <h3 id="cert-modal-title" className="text-lg sm:text-xl font-bold text-white">
                   {selectedCert.title}
                 </h3>
                 <p className="text-xs font-mono text-zinc-400 mt-0.5">
@@ -155,7 +233,7 @@ export default function Certificates() {
                 onClick={() => handleDownload(selectedCert)}
                 className="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold font-mono uppercase tracking-wider text-white bg-[#ff0033] hover:bg-red-600 shadow-glow-red transition-all"
               >
-                <Download className="w-4 h-4" />
+                <Download className="w-4 h-4" aria-hidden="true" />
                 <span>Download Original Certificate</span>
               </button>
             </div>

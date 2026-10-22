@@ -48,6 +48,14 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#080808] text-zinc-100 relative selection:bg-[#ff0033]/30 selection:text-white">
+      {/* 42. Accessible Skip-to-Content Link */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[99999] focus:px-5 focus:py-2.5 focus:bg-[#ff0033] focus:text-white focus:font-bold focus:rounded-xl focus:shadow-2xl focus:outline-none focus:ring-2 focus:ring-white"
+      >
+        Skip to main content
+      </a>
+
       {/* Custom Dual-State Red/Black Cursor */}
       <CustomCursor />
 
@@ -56,7 +64,7 @@ export default function App() {
 
       <Navbar />
 
-      <main id="main-content" className="relative z-10">
+      <main id="main-content" tabIndex="-1" role="main" className="relative z-10 focus:outline-none">
         <Hero />
         
         {/* About & Knowledge Graph */}

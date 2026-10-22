@@ -7,7 +7,7 @@ import PixelAvatar from './PixelAvatar';
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[92vh] flex items-center justify-center pt-24 sm:pt-28 pb-12 px-4 sm:px-6 lg:px-8">
+    <section id="hero" aria-label="Introduction and Overview" className="relative min-h-[92vh] flex items-center justify-center pt-24 sm:pt-28 pb-12 px-4 sm:px-6 lg:px-8">
       
       <div className="max-w-7xl mx-auto w-full relative z-10">
         

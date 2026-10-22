@@ -1,8 +1,68 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { X, Shield, FileText } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
 
 export default function LegalModal({ isOpen, type, onClose }) {
+  const modalRef = useRef(null);
+  const previousFocusRef = useRef(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    previousFocusRef.current = document.activeElement;
+
+    // Focus first focusable element inside modal
+    const focusableElements = modalRef.current?.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusableElements && focusableElements.length > 0) {
+      focusableElements[0].focus();
+    }
+
+    // Modal Accessibility: Escape to close and Tab focus trap
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        if (!modalRef.current) return;
+        const focusables = Array.from(
+          modalRef.current.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          )
+        );
+        if (focusables.length === 0) return;
+
+        const firstElement = focusables[0];
+        const lastElement = focusables[focusables.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      if (previousFocusRef.current && typeof previousFocusRef.current.focus === 'function') {
+        previousFocusRef.current.focus();
+      }
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
@@ -10,26 +70,31 @@ export default function LegalModal({ isOpen, type, onClose }) {
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
+      aria-labelledby="legal-modal-title"
     >
-      <div className="relative w-full max-w-xl rounded-3xl obsidian-card p-6 sm:p-8 border border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
-        
+      <div
+        ref={modalRef}
+        className="relative w-full max-w-xl rounded-3xl obsidian-card p-6 sm:p-8 border border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]"
+      >
         {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-5 right-5 p-2 rounded-full bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors z-10"
-          aria-label="Close modal"
+          aria-label="Close modal dialog"
         >
-          <X className="w-5 h-5" />
+          <X className="w-5 h-5" aria-hidden="true" />
         </button>
 
         {type === 'privacy' ? (
           <div className="flex flex-col">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-2xl bg-[#ff0033]/10 flex items-center justify-center text-[#ff0033] border border-[#ff0033]/30 shrink-0">
-                <Shield className="w-5 h-5" />
+                <Shield className="w-5 h-5" aria-hidden="true" />
               </div>
               <div>
-                <h3 className="text-lg sm:text-xl font-bold text-white">Privacy Policy</h3>
+                <h3 id="legal-modal-title" className="text-lg sm:text-xl font-bold text-white">
+                  Privacy Policy
+                </h3>
                 <p className="text-[11px] font-mono text-zinc-400">Last updated: October 2026</p>
               </div>
             </div>
@@ -72,10 +137,12 @@ export default function LegalModal({ isOpen, type, onClose }) {
           <div className="flex flex-col">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-2xl bg-[#ff0033]/10 flex items-center justify-center text-[#ff0033] border border-[#ff0033]/30 shrink-0">
-                <FileText className="w-5 h-5" />
+                <FileText className="w-5 h-5" aria-hidden="true" />
               </div>
               <div>
-                <h3 className="text-lg sm:text-xl font-bold text-white">Terms of Service</h3>
+                <h3 id="legal-modal-title" className="text-lg sm:text-xl font-bold text-white">
+                  Terms of Service
+                </h3>
                 <p className="text-[11px] font-mono text-zinc-400">Last updated: October 2026</p>
               </div>
             </div>
@@ -117,7 +184,6 @@ export default function LegalModal({ isOpen, type, onClose }) {
             I Understand
           </button>
         </div>
-
       </div>
     </div>
   );

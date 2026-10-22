@@ -20,7 +20,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-20 sm:py-24 px-4 sm:px-6 lg:px-8 relative">
+    <section id="contact" aria-label="Contact and Inquiries" className="py-20 sm:py-24 px-4 sm:px-6 lg:px-8 relative">
       <div className="max-w-6xl mx-auto">
         
         {/* Header */}

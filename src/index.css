@@ -389,3 +389,34 @@ canvas {
   height: 100% !important;
   pointer-events: none;
 }
+
+/* ==========================================================================
+   46. Balanced Typography & Orphan Prevention (WCAG 2.1 AA)
+   ========================================================================== */
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+p, li {
+  text-wrap: pretty;
+}
+
+/* ==========================================================================
+   47. Touch Target Sizing & Tap Optimization (WCAG 2.5.5)
+   ========================================================================== */
+@media (pointer: coarse) {
+  button, 
+  a, 
+  input, 
+  select, 
+  textarea, 
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+html, body, button, a, input, textarea, select {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}

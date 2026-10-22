@@ -11,7 +11,7 @@ export default function CreatorHub() {
   ];
 
   return (
-    <section id="creator-hub" className="py-20 sm:py-24 px-4 sm:px-6 lg:px-8 relative">
+    <section id="creator-hub" aria-label="TeachmeROR Creator Hub" className="py-20 sm:py-24 px-4 sm:px-6 lg:px-8 relative">
       <div className="max-w-6xl mx-auto">
         
         {/* Main Creator Hub Obsidian Card */}

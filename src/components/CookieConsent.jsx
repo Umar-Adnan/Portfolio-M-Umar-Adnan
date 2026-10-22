@@ -28,7 +28,11 @@ export default function CookieConsent({ onOpenPrivacy }) {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-50 animate-in fade-in slide-in-from-bottom-4 duration-300">
+    <aside
+      role="complementary"
+      aria-label="Privacy and Cookie Consent"
+      className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-50 animate-in fade-in slide-in-from-bottom-4 duration-300"
+    >
       <div className="obsidian-card p-5 shadow-2xl">
         <div className="flex items-start gap-3.5 mb-3">
           <div className="w-9 h-9 rounded-xl bg-[#ff0033]/15 flex items-center justify-center text-[#ff0033] flex-shrink-0 border border-[#ff0033]/30">
@@ -68,6 +72,6 @@ export default function CookieConsent({ onOpenPrivacy }) {
           </div>
         </div>
       </div>
-    </div>
+    </aside>
   );
 }

@@ -291,7 +291,7 @@ export default function KnowledgeGraph() {
   }, [isVisible]);
 
   return (
-    <div ref={containerRef}>
+    <div id="knowledge-graph" role="region" aria-label="Interactive Knowledge Graph" ref={containerRef}>
       <TiltCard className="rounded-3xl obsidian-card p-5 sm:p-6 relative overflow-hidden">
         
         {/* Top bar */}
@@ -307,7 +307,7 @@ export default function KnowledgeGraph() {
         </div>
 
         <div className="relative w-full h-[280px] sm:h-[350px] rounded-2xl bg-black/40 backdrop-blur-md overflow-hidden border border-white/10">
-          <canvas ref={canvasRef} className="w-full h-full block cursor-crosshair" />
+          <canvas ref={canvasRef} role="img" aria-label="Interactive neural network graph of technical skills and architectures" className="w-full h-full block cursor-crosshair" />
 
           {/* Legend */}
           <div className="absolute bottom-3 left-3 bg-[#111116]/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-[10px] font-mono flex items-center gap-3">
