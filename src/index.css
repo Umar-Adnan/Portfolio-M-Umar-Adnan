@@ -196,6 +196,19 @@ html.low-end #particles-js {
   }
 }
 
+/* 8. Content-visibility for offscreen below-the-fold sections */
+#about,
+#knowledge-graph,
+#projects,
+#creator-hub,
+#experience,
+#certificates,
+#skills,
+#contact {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 750px;
+}
+
 /* Red Glow Hover utility */
 .hover-glow-red {
   transition: all 0.25s ease-out;
